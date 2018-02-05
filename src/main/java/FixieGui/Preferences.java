@@ -18,6 +18,7 @@ public class Preferences {
         this.noWrap_ = false;
         this.foreground_ = null;
         this.background_ = null;
+        this.delimiter = null;
     }
 
     public boolean isDecoded_() {
@@ -54,6 +55,15 @@ public class Preferences {
 
     public void setBackground_(Color background_) { this.background_ = background_; }
 
+    public String getDelimiter() {
+        return delimiter;
+    }
+
+    public void setDelimiter(String delimiter) {
+        this.delimiter = delimiter;
+    }
+
+
     public void ReadPreference()
     {
         try {
@@ -69,6 +79,7 @@ public class Preferences {
             this.setNoWrap_(p.isNoWrap_());
             this.setBackground_(p.getBackground_());
             this.setBackground_(p.getBackground_());
+            this.setDelimiter(p.getDelimiter());
         } catch (Exception err){
             System.out.println(err);
         }
@@ -93,4 +104,5 @@ public class Preferences {
     boolean noWrap_;
     Color foreground_;
     Color background_;
+    String delimiter;
 }

@@ -47,7 +47,7 @@ public class FixFileReader {
                 return ret;
             }
 
-            return ParseLine(input);
+            return ParseLine(input, "");
 
         } catch (IOException e) {
             System.err.println(e);
@@ -72,7 +72,7 @@ public class FixFileReader {
         return strings;
     }
 
-    public ParsedLine ParseLine(String str)
+    public ParsedLine ParseLine(String str, String delimiter)
     {
         ParsedLine ret = new ParsedLine();
 
@@ -81,7 +81,11 @@ public class FixFileReader {
             ret.header_ =  str.substring(0, m.start());
             String line = str.substring(m.start());
 
-            ret.tags_ = line.split(Character.toString((char)1));
+            if (delimiter == null || delimiter.isEmpty()) {
+                delimiter = GetDelimiter(line);
+            }
+
+            ret.tags_ = line.split(Pattern.quote(delimiter));
             ret.returnCode_ = 1;
         }
         else {
@@ -89,6 +93,37 @@ public class FixFileReader {
             return ret;
         }
         return ret;
+    }
+
+    private String GetDelimiter(String s)
+    {
+        int i = 0;
+        StringBuilder sb = new StringBuilder();
+
+        // Find the first character of the delimiter.
+        // We assume the delimiter is not a digit, letter,
+        // period or equal.
+        for (; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (!Character.isLetterOrDigit(c)
+                    && c != '.'
+                    && c != '=')
+            {
+                break;
+            }
+        }
+
+        // We assume the delimiter is everything up until
+        // the next digit
+        for (; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (!Character.isDigit(c)) {
+                sb.append(c);
+            } else {
+                break;
+            }
+        }
+        return sb.toString();
     }
 
     BufferedReader in_;

@@ -4,6 +4,7 @@ import FixData.FixDataStore;
 import LogReader.FixDecoder;
 import LogReader.FixFileReader;
 import LogReader.ParsedLine;
+import jdk.nashorn.internal.scripts.JO;
 
 import javax.swing.*;
 import java.awt.Color;
@@ -116,6 +117,24 @@ public class FixieController {
         displayText();
     }
 
+    public void SetDelimiter(ActionEvent event) throws Exception
+    {
+        if (preferences_.getDelimiter() != null
+            && !preferences_.getDelimiter().isEmpty())
+        {
+            preferences_.setDelimiter("");
+        }
+        else {
+            String delimiter = JOptionPane.showInputDialog(
+                    null,
+                    "Enter Delimiter");
+
+            preferences_.setDelimiter(delimiter);
+            preferences_.SavePreferences();
+        }
+        displayText();
+    }
+
 
     private void displayText() throws Exception
     {
@@ -150,8 +169,9 @@ public class FixieController {
         StringBuilder sb = new StringBuilder();
         FixDecoder decoder = new FixDecoder(dataStore_);
 
-        for (int i = 0; i < rawText_.size(); ++i) {
-            ParsedLine pl = reader_.ParseLine(rawText_.get(i));
+        for (int i = 0; i < rawText_.size(); ++i)
+        {
+            ParsedLine pl = reader_.ParseLine(rawText_.get(i), preferences_.getDelimiter());
 
             if (pl.returnCode_ == 0) {
                 continue;
