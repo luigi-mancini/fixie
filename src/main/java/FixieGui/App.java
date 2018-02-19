@@ -39,6 +39,8 @@ public class App {
         menubar_ = new JMenuBar();
         JMenu file = new JMenu("File");
         menubar_.add(file);
+        JMenu edit = new JMenu("Edit");
+        menubar_.add(edit);
         JMenu preferences = new JMenu("Preferences");
         menubar_.add(preferences);
 
@@ -49,6 +51,21 @@ public class App {
         JCheckBoxMenuItem decode = new JCheckBoxMenuItem("Decode", pref.isDecoded_());
         decode.setMnemonic(KeyEvent.VK_D);
         file.add(decode);
+
+        JMenu find = new JMenu("Find");
+        edit.add(find);
+
+        JMenuItem mi_find = new JMenuItem("Find...");
+        open.setMnemonic(KeyEvent.VK_F);
+        find.add(mi_find);
+
+        JMenuItem mi_find_next = new JMenuItem("Find Next");
+        open.setMnemonic(KeyEvent.VK_N);
+        find.add(mi_find_next);
+
+        JMenuItem mi_find_prev = new JMenuItem("Find Previous");
+        open.setMnemonic(KeyEvent.VK_P);
+        find.add(mi_find_prev);
 
         JCheckBoxMenuItem doubleSpace = new JCheckBoxMenuItem("Double Space", pref.isDoubleSpace_());
         decode.setMnemonic(KeyEvent.VK_D);
